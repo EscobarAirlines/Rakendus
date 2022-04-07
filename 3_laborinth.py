@@ -1,39 +1,57 @@
+import random
 map = [
     [12, 0, 1, 0, 1],
-    [1, 1, 1, 0, 1],
-    [0, 0, 1, 1, 0],
-    [0, 0, 1, 0, 0],
-    [24, 1, 1, 1, 1]
+    [1, 0, 1, 0, 1],
+    [1, 0, 1, 1, 0],
+    [1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 24]
 ]
 
-start_pos_x = 0
-start_pos_y = 0
+def get_start_pos():
+    for y in range(0, len(map)):
+        for x in range(0, len(map[y])):
+            if map[y][x] == 12:
+                return y, x
 
-y_rows = 5
-x_columns = 5
+startY, startX = get_start_pos()
 
-def get_next_free_pos(current_pos_y, current_pos_x):
-    if current_pos_x + 1 < x_columns and map[current_pos_y][current_pos_x + 1] == 1:
+rowX = len(map[0])
+
+colY = len(map)
+
+def get_next_free_pos(current_posY, current_posX):
+    possible_moves = []
+    
+    if current_posX + 1 < colY and map[current_posY][current_posX + 1] in [1, 24]:
         print("can go right")
-        return [current_pos_y, current_pos_x + 1]
-
-    if current_pos_y + 1 < y_rows and map[current_pos_y + 1][current_pos_x] == 1:
-        print("can go bottom")
-        return [current_pos_y + 1, current_pos_x]
+        possible_moves.append((current_posY, current_posX + 1))
     
-    if current_pos_x - 1 > 0 and map[current_pos_y][current_pos_x - 1] == 1:
+    if current_posX - 1 >= 0 and map[current_posY][current_posX - 1] in [1, 24]:
         print("can go left")
-        return [current_pos_y, current_pos_x - 1]
-
-    if current_pos_x - 1 > 0 and map[current_pos_y - 1][current_pos_x] == 1:
-        print("can go top")
-        return [current_pos_y - 1, current_pos_x]
-
+        possible_moves.append((current_posY, current_posX - 1))
     
+    if current_posY + 1 < colY and map[current_posY + 1][current_posX] in [1, 24]:
+        print("can go down")
+        possible_moves.append((current_posY + 1, current_posX))
+    
+    if current_posY - 1 >= 0 and map[current_posY - 1][current_posX] in [1, 24]:
+        print("can go up")
+        possible_moves.append((current_posY - 1, current_posX))
+    
+    if map[current_posY][current_posX] == 24:
+        print("FINISH")
+        return False
+    
+    random_move = random.choice(possible_moves)
+    
+    print(random_move)
+    
+    return random_move
 
-next_free_pos = get_next_free_pos(start_pos_y, start_pos_x)
-print("Next free position is: ", next_free_pos)
+next_free_pos = get_next_free_pos(startY, startX)
+
+print("next free pos", next_free_pos)
 
 while next_free_pos:
     next_free_pos = get_next_free_pos(next_free_pos[0], next_free_pos[1])
-    print("Next free position is: ", next_free_pos)
+    print("next free pos", next_free_pos)
