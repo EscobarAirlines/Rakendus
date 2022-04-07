@@ -1,3 +1,4 @@
+# Tim Kasper TA-21V
 import random
 map = [
     [12, 0, 1, 0, 1],
